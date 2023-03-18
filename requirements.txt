@@ -1,0 +1,6 @@
+fastapi
+gunicorn
+uvicorn
+google-cloud-firestore
+firebase-admin
+openai
