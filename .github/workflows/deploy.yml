@@ -13,10 +13,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
@@ -40,5 +40,5 @@ jobs:
           --set-env-vars="OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }},\
           FIREBASE_ADMIN_SDK_KEY=${{ secrets.FIREBASE_ADMIN_SDK_KEY }},\
           BUCKET_NAME=${{ secrets.BUCKET_NAME }},\
-          GOOGLE_API_KEY=${{ secrets.Google_API_KEY }},\
+          GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }},\
           GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}"
