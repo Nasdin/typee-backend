@@ -1,0 +1,1 @@
+# This folder contains Pydantic model files (e.g., word_data.py).

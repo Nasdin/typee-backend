@@ -1,0 +1,1 @@
+# This folder contains utility files, like authentication functions.

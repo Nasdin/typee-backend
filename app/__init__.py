@@ -1,0 +1,1 @@
+#  This folder contains the main FastAPI application and its components.

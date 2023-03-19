@@ -1,3 +1,5 @@
+# This file initializes and starts the FastAPI application which creates the backend for Typee the robot.
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 import firebase_admin

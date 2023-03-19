@@ -1,0 +1,1 @@
+# This folder contains service files that interact with external services like Firebase, Google Cloud Storage, OpenAI, and Google Search.
