@@ -1,6 +1,10 @@
 fastapi
-gunicorn
 uvicorn
-google-cloud-firestore
+gunicorn
+google-cloud-storage
+google-auth
+google-api-python-client
 firebase-admin
 openai
+httpx
+Pydantic

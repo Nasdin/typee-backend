@@ -25,7 +25,7 @@ jobs:
     - name: Build and push Docker image
       run: |-
         gcloud builds submit \
-          --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/typee-app \
+          --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/typee-app:${GITHUB_SHA} \
           --project ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Deploy to Cloud Run
@@ -33,7 +33,7 @@ jobs:
         gcloud run deploy typee-app \
           --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/typee-app \
           --platform managed \
-          --region us-central1 \
+          --region asia-southeast1 \
           --allow-unauthenticated \
           --project ${{ secrets.GCP_PROJECT_ID }} \
-          --set-env-vars="OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}"
+          --set-env-vars="OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }},FIREBASE_ADMIN_SDK_KEY=${{ secrets.FIREBASE_ADMIN_SDK_KEY }},WORD_IMG_BUCKET_NAME=${{ secrets.WORD_IMG_BUCKET_NAME }},Google_API_KEY=${{ secrets.Google_API_KEY }},GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}"
