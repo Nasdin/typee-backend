@@ -27,9 +27,6 @@ The application is deployed to Google Cloud Run using Docker and is configured v
 | │   ├── firebase.py        | Module containing the logic to interact with Google Firebase Firestore                               |
 | │   ├── openai.py          | Module containing the logic to interact with OpenAI GPT-3 API                                        |
 | │   ├── gcs.py             | Module containing the logic to interact with Google Cloud Storage                                    |
-| ├── utils/                 | Folder containing utility modules                                                                    |
-| │   ├── __init__.py        | Empty __init__.py file for package initialization                                                   |
-| │   ├── auth.py            | Module containing authentication and authorization logic using Google Firebase                       |
 | │   ├── google_search.py   | Module containing the logic to interact with Google Search                                           |
 | ├── tests/                 | Folder containing test files for the application                                                     |
 | Dockerfile                 | Dockerfile to build the Docker image for the FastAPI application                                     |
