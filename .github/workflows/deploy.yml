@@ -36,4 +36,9 @@ jobs:
           --region asia-southeast1 \
           --allow-unauthenticated \
           --project ${{ secrets.GCP_PROJECT_ID }} \
-          --set-env-vars="OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }},FIREBASE_ADMIN_SDK_KEY=${{ secrets.FIREBASE_ADMIN_SDK_KEY }},WORD_IMG_BUCKET_NAME=${{ secrets.WORD_IMG_BUCKET_NAME }},Google_API_KEY=${{ secrets.Google_API_KEY }},GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}"
+          --substitutions=_FIREBASE_ADMINSDK_JSON=${{ secrets.FIREBASE_ADMINSDK_JSON }} \
+          --set-env-vars="OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }},\
+          FIREBASE_ADMIN_SDK_KEY=${{ secrets.FIREBASE_ADMIN_SDK_KEY }},\
+          BUCKET_NAME=${{ secrets.BUCKET_NAME }},\
+          Google_API_KEY=${{ secrets.Google_API_KEY }},\
+          GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }}"

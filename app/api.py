@@ -15,10 +15,8 @@ db = firestore.client()
 # Initialize OpenAI API
 openai.api_key = "your_openai_api_key"
 
-app = FastAPI()
+from . import app
 
-class WordData(BaseModel):
-    word: str
 
 @app.post("/is-word-safe")
 async def is_word_safe(word_data: WordData):
