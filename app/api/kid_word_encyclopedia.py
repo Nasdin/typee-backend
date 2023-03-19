@@ -5,7 +5,7 @@ from app.services.openai import chat_completion
 
 
 async def get_image_url_from_firebase(word_data: WordData) -> str:
-    data = get_firestore_document("image_urls", word_data.word)
+    data = await get_firestore_document("image_urls", word_data.word)
     if data:
         return data["image_url"]
 
@@ -16,7 +16,7 @@ async def get_image_url_from_firebase(word_data: WordData) -> str:
     gcs_image_path = await upload_image_to_gcs(image_url)
 
     # Update Firebase with the GCS image path
-    set_firestore_document("image_urls", word_data.word, {"image_url": gcs_image_path})
+    await set_firestore_document("image_urls", word_data.word, {"image_url": gcs_image_path})
 
     return gcs_image_path
 
@@ -40,7 +40,7 @@ async def generate_fact(word_data: WordData) -> str:
 
 
 async def kid_word_encyclopedia(word_data: WordData):
-    data = get_firestore_document("word_data", word_data.word)
+    data = await get_firestore_document("word_data", word_data.word)
 
     if data:
         # Data found in Firestore, return as WordInfo object
@@ -66,7 +66,7 @@ async def kid_word_encyclopedia(word_data: WordData):
             "story": story,
             "fact": fact,
         }
-        set_firestore_document("word_data", word_data.word, data)
+        await set_firestore_document("word_data", word_data.word, data)
 
         # Create WordInfo object
         word_info = WordInfo(**data)

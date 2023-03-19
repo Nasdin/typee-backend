@@ -5,14 +5,14 @@ from app.models.word_data import WordData
 
 async def is_word_safe_firestore(word_data: WordData):
     # Check if the word safety status is in Firestore
-    data = get_firestore_document("safe_words", word_data.word)
+    data = await get_firestore_document("safe_words", word_data.word)
     if data:
         return data["is_safe"]
     raise IndexError
 
 
 async def update_word_safe_firestore(word_data: WordData, is_safe):
-    set_firestore_document("safe_words", word_data.word, {"is_safe": is_safe})
+    await set_firestore_document("safe_words", word_data.word, {"is_safe": is_safe})
 
 
 async def is_word_safe_find_out_from_openai(word_data: WordData):
