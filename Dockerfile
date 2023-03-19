@@ -15,10 +15,7 @@ COPY . .
 
 # Make port 80 available to the world outside this container
 EXPOSE 80
-EXPOSE 8080
 
-# Define environment variable
-ENV GUNICORN_CMD_ARGS="--bind=0.0.0.0:80"
 
 # Run gunicorn when the container launches
-CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "-b", "0.0.0.0:8000", "--access-logfile", "-", "--error-logfile", "-"]
+CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "app.main:app", "-b", "0.0.0.0:80", "--access-logfile", "-", "--error-logfile", "-"]
