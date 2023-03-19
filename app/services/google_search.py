@@ -14,6 +14,20 @@ db = firestore.Client()
 
 
 async def get_image_from_google(word: str) -> str:
+    """
+    Retrieves an image from Google search given a search word and returns the URL of the first image result
+
+    Args:
+        word (str): Search word for which to retrieve an image
+
+    Returns:
+        str: URL of the first image result
+
+    Example:
+        >>> url = await get_image_from_google("cat")
+        >>> url.startswith("http")
+        True
+    """
     async with httpx.AsyncClient() as client:
         base_url = "https://www.googleapis.com/customsearch/v1"
         params = {
@@ -31,6 +45,21 @@ async def get_image_from_google(word: str) -> str:
 
 
 async def upload_image_to_gcs(image_url: str) -> str:
+    """
+    Uploads an image to Google Cloud Storage from a URL and returns the GCS image path
+
+    Args:
+        image_url (str): URL of the image to upload
+
+    Returns:
+        str: GCS image path of the uploaded image
+
+    Example:
+        >>> url = "https://via.placeholder.com/150"
+        >>> path = await upload_image_to_gcs(url)
+        >>> path.startswith("gs://")
+        True
+    """
     # Download the image
     async with httpx.AsyncClient() as client:
         response = await client.get(image_url)
@@ -50,6 +79,19 @@ async def upload_image_to_gcs(image_url: str) -> str:
 
 
 async def update_firebase_with_gcs_image_path(word: str, gcs_image_path: str):
+    """
+    Updates Firebase with the GCS image path for a given word
+
+    Args:
+        word (str): The word for which to update the image path
+        gcs_image_path (str): The GCS image path to update
+
+    Returns:
+        None
+
+    Example:
+        >>> await update_firebase_with_gcs_image_path("cat", "gs://example-bucket/cat.jpg")
+    """
     doc_ref = db.collection("image_urls").document(word)
     # Use a thread to run synchronous code
     loop = asyncio.get_event_loop()

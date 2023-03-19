@@ -1,5 +1,5 @@
-import os
 import asyncio
+import os
 
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -14,6 +14,16 @@ db = firestore.client()
 
 
 async def get_firestore_document(collection: str, document: str):
+    """
+    Gets a document from a specified Firestore collection.
+
+    Args:
+        collection (str): The name of the Firestore collection to retrieve the document from.
+        document (str): The name of the document to retrieve.
+
+    Returns:
+        A dictionary containing the document data, or None if the document does not exist.
+    """
     doc_ref = db.collection(collection).document(document)
 
     # Use a thread to run synchronous code
@@ -27,6 +37,17 @@ async def get_firestore_document(collection: str, document: str):
 
 
 async def set_firestore_document(collection: str, document: str, data: dict):
+    """
+        Sets a document in a specified Firestore collection.
+
+        Args:
+            collection (str): The name of the Firestore collection to set the document in.
+            document (str): The name of the document to set.
+            data (dict): A dictionary containing the data to set in the document.
+
+        Returns:
+            None
+        """
     doc_ref = db.collection(collection).document(document)
 
     # Use a thread to run synchronous code

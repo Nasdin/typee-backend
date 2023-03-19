@@ -1,5 +1,3 @@
-# test_functions.py
-
 from unittest.mock import MagicMock, patch
 
 from hypothesis import given, settings
@@ -10,8 +8,6 @@ from app.services.firebase import (
     set_firestore_document,
 )
 
-
-# Tests for app/services/firebase.py
 
 @settings(deadline=None)
 @given(collection=text(), document=text(), data=dictionaries(keys=text(), values=text()))
