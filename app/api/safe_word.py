@@ -1,5 +1,7 @@
 from app.services.firebase import get_firestore_document, set_firestore_document
-from app.services.google_search import chat_completion
+from app.services.openai import chat_completion
+from app.models.word_data import WordData
+
 
 async def is_word_safe_firestore(word_data: WordData):
     # Check if the word safety status is in Firestore
@@ -8,10 +10,12 @@ async def is_word_safe_firestore(word_data: WordData):
         return data["is_safe"]
     raise IndexError
 
+
 async def update_word_safe_firestore(word_data: WordData, is_safe):
     set_firestore_document("safe_words", word_data.word, {"is_safe": is_safe})
 
-async def is_word_safe_find_out_from_openai(word_data:WordData):
+
+async def is_word_safe_find_out_from_openai(word_data: WordData):
     prompt = f"Is the word '{word_data.word}' safe for children? Please answer yes or no."
     response = await chat_completion(prompt)
     result = response.strip().lower()
