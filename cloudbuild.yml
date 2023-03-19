@@ -1,0 +1,9 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/typee-app:$SHORT_SHA',
+         '--build-arg', 'BUCKET_NAME=$_BUCKET_NAME',
+         '--build-arg', 'GOOGLE_API_KEY=$_GOOGLE_API_KEY',
+         '--build-arg', 'GOOGLE_CSE_ID=$_GOOGLE_CSE_ID',
+         '--build-arg', 'FIREBASE_ADMINSDK_JSON=$_FIREBASE_ADMINSDK_JSON',
+         '.']
+images: ['gcr.io/$PROJECT_ID/typee-app:$SHORT_SHA']

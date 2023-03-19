@@ -7,6 +7,8 @@ ENV GOOGLE_API_KEY=${GOOGLE_API_KEY}
 ARG GOOGLE_CSE_ID
 ENV GOOGLE_CSE_ID=${GOOGLE_CSE_ID}
 
+ARG FIREBASE_ADMINSDK_JSON
+ENV FIREBASE_ADMINSDK_JSON_FILE /app/firebase-adminsdk.json
 # Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
@@ -20,8 +22,7 @@ COPY requirements.txt /app
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Create the Firebase credentials file from the environment variable
-ARG FIREBASE_ADMINSDK_JSON
-ENV FIREBASE_ADMINSDK_JSON_FILE /app/firebase-adminsdk.json
+
 RUN echo $FIREBASE_ADMINSDK_JSON > $FIREBASE_ADMINSDK_JSON_FILE
 
 # Copy the rest of the working directory contents into the container at /app

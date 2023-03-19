@@ -26,7 +26,11 @@ jobs:
       run: |-
         gcloud builds submit \
           --tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/typee-app:${GITHUB_SHA} \
-          --project ${{ secrets.GCP_PROJECT_ID }}
+          --project ${{ secrets.GCP_PROJECT_ID }} \
+          --substitutions=_BUCKET_NAME=${{ secrets.BUCKET_NAME }},\
+          _GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }},\
+          _GOOGLE_CSE_ID=${{ secrets.GOOGLE_CSE_ID }},\
+          _FIREBASE_ADMINSDK_JSON=${{ secrets.FIREBASE_ADMINSDK_JSON }}
 
     - name: Deploy to Cloud Run
       run: |-
@@ -36,7 +40,6 @@ jobs:
           --region asia-southeast1 \
           --allow-unauthenticated \
           --project ${{ secrets.GCP_PROJECT_ID }} \
-          --substitutions=_FIREBASE_ADMINSDK_JSON=${{ secrets.FIREBASE_ADMINSDK_JSON }} \
           --set-env-vars="OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }},\
           FIREBASE_ADMIN_SDK_KEY=${{ secrets.FIREBASE_ADMIN_SDK_KEY }},\
           BUCKET_NAME=${{ secrets.BUCKET_NAME }},\
