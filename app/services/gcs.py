@@ -1,5 +1,5 @@
 from google.cloud import storage
-from config import GCP_BUCKET_NAME
+from app.core.config import GCP_BUCKET_NAME
 
 storage_client = storage.Client()
 bucket = storage_client.get_bucket(GCP_BUCKET_NAME)

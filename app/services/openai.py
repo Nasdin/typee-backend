@@ -1,6 +1,7 @@
 import openai
+from app.core.config import OPENAI_API_KEY
 
-openai.api_key = "your_openai_api_key"
+openai.api_key = OPENAI_API_KEY
 
 def chat_completion(prompt: str):
     completion = openai.ChatCompletion.create(

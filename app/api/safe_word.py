@@ -1,55 +1,31 @@
-from google.cloud import firestore
-import openai
-
-db = firestore.Client()
-
+from app.services.firebase import get_firestore_document, set_firestore_document
+from app.services.google_search import chat_completion
 
 async def is_word_safe_firestore(word_data: WordData):
     # Check if the word safety status is in Firestore
-    doc_ref = db.collection("safe_words").document(word_data.word)
-    doc = doc_ref.get()
-
-    if doc.exists:
-        return doc.to_dict()["is_safe"]
+    data = get_firestore_document("safe_words", word_data.word)
+    if data:
+        return data["is_safe"]
     raise IndexError
 
-
 async def update_word_safe_firestore(word_data: WordData, is_safe):
-    doc_ref = db.collection("safe_words").document(word_data.word)
-    doc_ref.set({"is_safe": is_safe})
-
-
+    set_firestore_document("safe_words", word_data.word, {"is_safe": is_safe})
 
 async def is_word_safe_find_out_from_openai(word_data:WordData):
-    openai.api_key = os.environ.get("OPENAI_API_KEY")
-
-    response = openai.Completion.create(
-        engine="davinci-codex",
-        prompt=f"Is the word '{word_data.word}' safe for children?",
-        max_tokens=5,
-        n=1,
-        stop=None,
-        temperature=0.5,
-    )
-
-    result = response.choices[0].text.strip().lower()
-
-    return result == "yes"
-
+    prompt = f"Is the word '{word_data.word}' safe for children? Please answer yes or no."
+    response = await chat_completion(prompt)
+    result = response.strip().lower()
+    return result == "yes" or result == "y"
 
 
 async def is_word_safe(word_data: WordData):
-    # Integrates both firestore and openai
+    # Integrates both Firestore and OpenAI
 
     try:
         is_safe = await is_word_safe_firestore(word_data)
         return is_safe
     except IndexError:
-        # Call openAI instead to find out
+        # Call OpenAI instead to find out
         is_safe = await is_word_safe_find_out_from_openai(word_data)
         await update_word_safe_firestore(word_data, is_safe)
         return is_safe
-    
-
-
-
