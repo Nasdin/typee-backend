@@ -51,7 +51,7 @@ async def kid_word_encyclopedia_route(word_data: WordData, uid: str = Depends(au
     >>> kid_word_encyclopedia_route(WordData(word="book"), "user_id")
     WordInfo(imageUrl='https://example.com/book.jpg', explanation='A book is a collection of written or printed pages that can be read.', story='Once upon a time, there was a girl who loved to read books. She would spend hours lost in different worlds, learning new things, and meeting new characters. Her favorite book was about a little girl who lived in a magical forest.', fact='The first book ever printed was the Gutenberg Bible, printed in 1455.')
     """
-        try:
+    try:
         return await kid_word_encyclopedia(word_data)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
