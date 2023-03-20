@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.models.word_data import WordData, WordInfo
-from app.services.auth import authenticate_user
+from app.services.firebase import authenticate_user
 from app.controllers.safe_word import is_word_safe
 from app.controllers.kid_word_encyclopedia import kid_word_encyclopedia
 
