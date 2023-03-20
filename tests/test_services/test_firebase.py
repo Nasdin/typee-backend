@@ -25,7 +25,8 @@ app = FastAPI()
 @pytest.mark.asyncio
 async def test_set_firestore_document(mocker: MockerFixture, collection: str, document: str, data: dict):
     mock_document = mocker.MagicMock()
-    mock_collection = mocker.patch("app.services.firebase.db.collection", return_value=mocker.MagicMock(document=mocker.MagicMock(return_value=mock_document)))
+    mock_collection = mocker.patch("app.services.firebase.db.collection", return_value=mocker.MagicMock(
+        document=mocker.MagicMock(return_value=mock_document)))
 
     await set_firestore_document(collection, document, data)
     mock_document.set.assert_called_once_with(data)
@@ -37,7 +38,8 @@ async def test_set_firestore_document(mocker: MockerFixture, collection: str, do
 @pytest.mark.asyncio
 async def test_get_firestore_document(mocker: MockerFixture, collection: str, document: str):
     mock_document = mocker.MagicMock()
-    mock_collection = mocker.patch("app.services.firebase.db.collection", return_value=mocker.MagicMock(document=mocker.MagicMock(return_value=mock_document)))
+    mock_collection = mocker.patch("app.services.firebase.db.collection", return_value=mocker.MagicMock(
+        document=mocker.MagicMock(return_value=mock_document)))
     mock_document.get.return_value.exists = True
     mock_document.get.return_value.to_dict.return_value = {"example": "data"}
 
@@ -64,17 +66,33 @@ collection_strategy = st.text(min_size=1, max_size=10)
 uid_strategy = st.text(min_size=1, max_size=10)
 limit_strategy = st.integers(min_value=1, max_value=100)
 offset_strategy = st.integers(min_value=0, max_value=100)
+attribute_strategy = st.text(
+    min_size=1, max_size=20).filter(lambda x: x.isalnum())
 
 
-@given(collection=collection_strategy, uid=uid_strategy)
+@given(
+    collection=collection_strategy,
+    uid=uid_strategy,
+    attribute=attribute_strategy
+)
 @pytest.mark.asyncio
-async def test_get_firestore_collection_by_uid(collection: str, uid: str):
-    mock_db[collection] = {
-        uid: [{"id": "doc1"}, {"id": "doc2"}, {"id": "doc3"}]
-    }
-    result = await get_firestore_collection_by_uid(collection, uid)
+async def test_get_firestore_collection_by_uid(
+    collection: str,
+    uid: str,
+    attribute: str
+):
+    # Mock Firestore data for the specified collection and user ID
+    mock_data = [{"id": "doc1", attribute: "value1"}, {
+        "id": "doc2", attribute: "value2"}, {"id": "doc3", attribute: "value3"}]
+    mock_db[collection] = {uid: mock_data}
+
+    # Call the function being tested
+    result = await get_firestore_collection_by_uid(collection, uid, attribute)
+
+    # Verify the function returns the expected results
     assert isinstance(result, List)
-    assert all(isinstance(doc_id, str) for doc_id in result)
+    assert all(isinstance(doc_value, str) for doc_value in result)
+    assert result == ["value1", "value2", "value3"]
 
 
 @given(collection=collection_strategy, uid=uid_strategy, limit=limit_strategy, offset=offset_strategy)
