@@ -6,33 +6,6 @@ Typee Backend is a FastAPI application that provides API endpoints for the Typee
 
 The application is deployed to Google Cloud Run using Docker and is configured via a GitHub Actions CI/CD pipeline. The pipeline is triggered by a release with a git tag.
 
-## Modules and Files
-
-| Module/File                | Description                                                                                          |
-|----------------------------|------------------------------------------------------------------------------------------------------|
-| app/                       | Main application folder containing all the modules and files for the FastAPI application             |
-| ├── __init__.py            | File containing app initialization, Firebase admin initialization, and router                       |
-| ├── api.py                 | Main FastAPI application initialization                                                              |
-| ├── api/                   | Folder containing FastAPI routers                                                                    |
-| │   ├── __init__.py        | Empty __init__.py file for package initialization                                                   |
-| │   ├── kid_word_encyclopedia.py | Router containing the API endpoint for kid_word_encyclopedia                                     |
-| │   ├── safe_word.py       | Router containing the API endpoint for safe_word                                                     |
-| ├── core/                  | Folder containing core configuration files                                                           |
-| │   ├── __init__.py        | Empty __init__.py file for package initialization                                                   |
-| ├── models/                | Folder containing Pydantic models used in the application                                            |
-| │   ├── __init__.py        | Empty __init__.py file for package initialization                                                   |
-| │   ├── word_data.py       | Pydantic model for word data                                                                         |
-| ├── services/              | Folder containing service modules                                                                    |
-| │   ├── __init__.py        | Empty __init__.py file for package initialization                                                   |
-| │   ├── firebase.py        | Module containing the logic to interact with Google Firebase Firestore                               |
-| │   ├── openai.py          | Module containing the logic to interact with OpenAI GPT-3 API                                        |
-| │   ├── google_search.py   | Module containing the logic to interact with Google Search                                           |
-| ├── tests/                 | Folder containing test files for the application                                                     |
-| Dockerfile                 | Dockerfile to build the Docker image for the FastAPI application                                     |
-| requirements.txt           | Python package requirements for the FastAPI application                                              |
-| .github/                   | Folder containing GitHub configuration files                                                         |
-| ├── workflows/             | Folder containing GitHub Actions workflows                                                           |
-| │   ├── deploy.yml         | GitHub Actions CI/CD configuration for deploying the FastAPI application to Google Cloud Run          |
 
 ## Getting Started
 

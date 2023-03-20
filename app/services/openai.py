@@ -4,6 +4,7 @@ from app.core.config import OPENAI_API_KEY
 
 openai.api_key = OPENAI_API_KEY
 
+
 async def chat_completion(prompt: str) -> str:
     """
     A function that sends a prompt to OpenAI's GPT-3.5-turbo model and returns the generated text.

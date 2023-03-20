@@ -2,7 +2,8 @@ import asyncio
 import os
 
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, auth
+from typing import List, Dict, Any
 
 # Get the path to the Firebase credentials file from the environment variable
 cred_path = os.environ.get("FIREBASE_ADMINSDK_JSON_FILE")
@@ -53,3 +54,59 @@ async def set_firestore_document(collection: str, document: str, data: dict):
     # Use a thread to run synchronous code
     loop = asyncio.get_event_loop()
     await loop.run_in_executor(None, lambda: doc_ref.set(data))
+
+
+async def get_firestore_collection_by_uid(collection: str, uid: str) -> List[str]:
+    query = db.collection(collection).where("uid", "==", uid)
+
+    # Use a thread to run synchronous code
+    loop = asyncio.get_event_loop()
+    docs = await loop.run_in_executor(None, lambda: query.stream())
+
+    return [doc.id for doc in docs]
+
+
+async def get_firestore_documents_by_uid(collection: str, uid: str, limit: int, offset: int) -> List[Dict[str, Any]]:
+    query = db.collection(collection).where(
+        "uid", "==", uid).offset(offset).limit(limit)
+
+    # Use a thread to run synchronous code
+    loop = asyncio.get_event_loop()
+    docs = await loop.run_in_executor(None, lambda: query.stream())
+
+    return [doc.to_dict() for doc in docs]
+
+
+def authenticate_user():
+    """
+    A decorator function to check for authenticated users.
+
+    Returns:
+        Wrapped function.
+
+    Example:
+        >>> @authenticate_user()
+        ... async def wrapped(*args, **kwargs):
+        ...     # do something
+        ...     pass
+    """
+
+    def wrapper(func):
+        async def wrapped(*args, **kwargs):
+            authorization_header = kwargs.get(
+                "request").headers.get("Authorization")
+            if authorization_header is None:
+                return {"error": "Unauthorized"}, 401
+
+            try:
+                token = authorization_header.split(" ")[1]
+                decoded_token = auth.verify_id_token(token)
+                kwargs["uid"] = decoded_token.get("uid")
+            except:
+                return {"error": "Unauthorized"}, 401
+
+            return await func(*args, **kwargs)
+
+        return wrapped
+
+    return wrapper
