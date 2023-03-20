@@ -8,6 +8,3 @@ firebase-admin
 openai
 httpx
 Pydantic
-hypothesis
-pytest
-pytest-asyncio

@@ -6,6 +6,40 @@ Typee Backend is a FastAPI application that provides API endpoints for the Typee
 
 The application is deployed to Google Cloud Run using Docker and is configured via a GitHub Actions CI/CD pipeline. The pipeline is triggered by a release with a git tag.
 
+## Files and modules
+
+Module/File	Purpose
+Dockerfile	Defines the Docker container for the application.
+LICENSE	Contains the terms and conditions of the software license for the project.
+README.md	Provides documentation, instructions, and an overview of the project.
+app/init.py	Initializes the Python package for the application.
+app/api.py	Sets up the FastAPI application and includes the routers.
+app/controllers	Contains the controllers that handle business logic.
+app/controllers/gallery.py	Implements the logic related to the gallery functionality.
+app/controllers/kid_word_encyclopedia.py	Implements the logic related to the kid word encyclopedia functionality.
+app/controllers/safe_word.py	Implements the logic related to checking if a word is safe.
+app/core/init.py	Initializes the Python package for the core components of the application.
+app/core/config.py	Contains the application configuration settings.
+app/models/init.py	Initializes the Python package for the data models.
+app/models/word_data.py	Defines the WordData and WordInfo models for the application.
+app/routers/init.py	Initializes the Python package for the routers.
+app/routers/gallery_words.py	Implements the API routes for the gallery functionality.
+app/routers/words.py	Implements the API routes for the safe words and kid word encyclopedia functionality.
+app/services/init.py	Initializes the Python package for the services.
+app/services/firebase.py	Implements the Firestore and Firebase authentication services.
+app/services/google_search.py	Implements the service for Google search.
+app/services/openai.py	Implements the service for the OpenAI GPT-4 API.
+cloudbuild.yml	Contains the Google Cloud Build configuration for the project.
+nginx.conf	Contains the configuration for the Nginx web server used in the Docker container.
+requirements.txt	Lists the Python dependencies required for the project.
+tests/init.py	Initializes the Python package for the tests.
+tests/test_routers.py	Contains the test cases for the API routes.
+tests/test_services	Contains the test cases for the various services.
+tests/test_services/init.py	Initializes the Python package for the test_services.
+tests/test_services/test_firebase.py	Contains test cases for the firebase service.
+tests/test_services/test_google_search.py	Contains test cases for the google_search service.
+tests/test_services/test_openai.py	Contains test cases for the openai service.
+This table provides an overview of the project's structure and the purpose of each module/file.
 
 ## Getting Started
 
