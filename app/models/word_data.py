@@ -1,3 +1,4 @@
+from typing import List, Field
 from pydantic import BaseModel
 
 
@@ -9,7 +10,6 @@ class WordData(BaseModel):
     - word (str): The word to be looked up.
     """
     word: str
-
 
 
 class WordInfo(BaseModel):
@@ -27,3 +27,15 @@ class WordInfo(BaseModel):
     story: str
     fact: str
 
+
+class WordListResponse(BaseModel):
+    words: List[WordData]
+
+
+class WordDetailsListResponse(BaseModel):
+    words: List[WordInfo]
+
+
+class GalleryWordsQueryParams(BaseModel):
+    limit: int = Field(default=10, ge=1, le=100)
+    offset: int = Field(default=0, ge=0)

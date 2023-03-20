@@ -56,14 +56,14 @@ async def set_firestore_document(collection: str, document: str, data: dict):
     await loop.run_in_executor(None, lambda: doc_ref.set(data))
 
 
-async def get_firestore_collection_by_uid(collection: str, uid: str) -> List[str]:
+async def get_firestore_collection_by_uid(collection: str, uid: str, attribute: str) -> List[str]:
     query = db.collection(collection).where("uid", "==", uid)
 
     # Use a thread to run synchronous code
     loop = asyncio.get_event_loop()
     docs = await loop.run_in_executor(None, lambda: query.stream())
 
-    return [doc.id for doc in docs]
+    return [doc.get(attribute) for doc in docs]
 
 
 async def get_firestore_documents_by_uid(collection: str, uid: str, limit: int, offset: int) -> List[Dict[str, Any]]:

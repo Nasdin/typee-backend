@@ -1,11 +1,11 @@
-from typing import List, Dict, Any
 from app.services.firebase import (
     get_firestore_collection_by_uid,
     get_firestore_documents_by_uid,
 )
+from app.models.word_data import WordDetailsListResponse, WordListResponse, WordInfo, GalleryWordsQueryParams
 
 
-async def get_gallery_words(uid: str, limit: int, offset: int) -> List[str]:
+async def get_gallery_words(uid: str, params: GalleryWordsQueryParams) -> WordListResponse:
     """
     Gets a list of words in the user's gallery.
 
@@ -15,18 +15,18 @@ async def get_gallery_words(uid: str, limit: int, offset: int) -> List[str]:
     - offset (int): The number of words to skip before starting to return results.
 
     Returns:
-    - List[str]: A list of words in the user's gallery.
+    - WordListResponse: A response containing a list of words in the user's gallery.
     """
     # Use the get_firestore_collection_by_uid function
-    word_ids = await get_firestore_collection_by_uid("gallery", uid)
+    words = await get_firestore_collection_by_uid("gallery", uid, "word")
 
     # Apply limit and offset to the list of word_ids
-    word_ids = word_ids[offset: offset + limit]
+    words = words[params.offset: params.offset + params.limit]
 
-    return word_ids
+    return WordListResponse(words=words)
 
 
-async def get_gallery_words_detailed(uid: str, limit: int, offset: int) -> List[Dict[str, Any]]:
+async def get_gallery_words_detailed(uid: str, params: GalleryWordsQueryParams) -> WordDetailsListResponse:
     """
     Gets detailed information for words in the user's gallery.
 
@@ -36,9 +36,12 @@ async def get_gallery_words_detailed(uid: str, limit: int, offset: int) -> List[
     - offset (int): The number of words to skip before starting to return results.
 
     Returns:
-    - List[Dict[str, Any]]: A list of dictionaries containing detailed information for each word in the user's gallery.
+    - WordDetailsListResponse: A response containing a list of dictionaries containing detailed information for each word in the user's gallery.
     """
     # Use the get_firestore_documents_by_uid function
-    word_docs = await get_firestore_documents_by_uid("gallery", uid, limit, offset)
+    word_docs = await get_firestore_documents_by_uid("gallery", uid, params.limit, params.offset)
 
-    return word_docs
+    # Convert the list of dictionaries to a list of WordInfo objects
+    words_info = [WordInfo(**word_doc) for word_doc in word_docs]
+
+    return WordDetailsListResponse(words=words_info)
